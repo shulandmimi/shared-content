@@ -1,0 +1,31 @@
+{
+    "preload": "./main.js",
+    "logo": "logo.png",
+    "features": [
+        {
+            "code": "upload",
+            "explain": "上传",
+            "cmds": [
+                {
+                    "type": "over",
+                    "label": "文本上传"
+                },
+                {
+                    "type": "img",
+                    "label": "图片上传"
+                },
+                {
+                    "type": "files",
+                    "label": "文件上传"
+                }
+            ]
+        },
+        {
+            "code": "upload-setting",
+            "explain": "上传配置",
+            "cmds": [
+                "upload-setting"
+            ]
+        }
+    ]
+}

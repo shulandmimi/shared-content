@@ -1,0 +1,70 @@
+{
+    "status": 0,
+    "data": [
+        {
+            "_id": "62565b609c00f9ac03255975",
+            "platform": {
+                "os": "linux",
+                "end": "utools"
+            },
+            "content": {
+                "type": 0,
+                "content": "import { NCard, NList, NListItem, NTag } from 'naive-ui';\r\nimport { fetchItems } from '../../services/items';\r\nimport useFetch from '../../hooks/useFetch';\r\nimport { DataContent, DataItem, DataType } from '../../../../core/src/types';\r\nimport Text from './component/Text';\r\nimport Image from './component/Image';\r\nimport File from './component/File';\r\nimport CopyTextButton from '../../components/CopyTextButton';"
+            },
+            "createdAt": "2022-04-13T05:10:56.583Z",
+            "updatedAt": "2022-04-13T05:10:56.583Z"
+        },
+        {
+            "_id": "6255973ccc877ad892140b4c",
+            "platform": {
+                "os": "linux",
+                "end": "utools"
+            },
+            "content": {
+                "type": 0,
+                "content": "import { defineComponent } from 'vue';\r\nimport { NCard, NList, NListItem, NTag } from 'naive-ui';\r\nimport { fetchItems } from '../../services/items';\r\nimport useFetch from '../../hooks/useFetch';\r\nimport { DataContent, DataItem, DataType } from '../../../../core/src/types';\r\nimport Text from './component/Text';\r\nimport Image from './component/Image';\r\nimport File from './component/File';\r\nimport CopyTextButton from '../../components/CopyTextButton';\r\n\r\nexport default defineComponent(function () {\r\n    const { run, state } = useFetch(async () => {\r\n        const res = await fetchItems();\r\n        if (!res.status) {\r\n            return res.data;\r\n        }\r\n        return [];\r\n    });\r\n\r\n    run();\r\n\r\n    function renderShareContent(item: DataContent) {\r\n        switch (item.type) {\r\n            case DataType.Text:\r\n                return <Text {...item}></Text>;\r\n            case DataType.File:\r\n                return <File {...item}></File>;\r\n            case DataType.Image:\r\n                return <File {...item}></File>;\r\n        }\r\n    }\r\n\r\n    function renderShareControl(item: DataContent) {\r\n        switch (item.type) {\r\n            case DataType.Text:\r\n                return <CopyTextButton content={item.content} />;\r\n        }\r\n    }\r\n\r\n    return () => (\r\n        <div style={{ boxSizing: 'border-box', padding: '0px 200px' }}>\r\n            <NList>\r\n                {state.data?.map(item => (\r\n                    <NListItem>\r\n                        <NCard\r\n                            v-slots={{\r\n                                header: () => <NTag size=\"small\">{item.platform.end}</NTag>,\r\n                                'header-extra': () => <span>{renderShareControl(item.content)}</span>,\r\n                            }}>\r\n                            {renderShareContent(item.content)}\r\n                        </NCard>\r\n                    </NListItem>\r\n                ))}\r\n            </NList>\r\n        </div>\r\n    );\r\n});"
+            },
+            "createdAt": "2022-04-12T15:14:04.542Z",
+            "updatedAt": "2022-04-12T15:14:04.543Z"
+        },
+        {
+            "_id": "62553c4afff6468fcf69ef8a",
+            "platform": {
+                "os": "linux",
+                "end": "utools"
+            },
+            "content": {
+                "type": 0,
+                "content": "filename: '[name].js',"
+            },
+            "createdAt": "2022-04-12T08:46:02.169Z",
+            "updatedAt": "2022-04-12T08:46:02.169Z"
+        },
+        {
+            "_id": "62553c2ffff6468fcf69ef89",
+            "platform": {
+                "os": "linux",
+                "end": "utools"
+            },
+            "content": {
+                "type": 0,
+                "content": "sync"
+            },
+            "createdAt": "2022-04-12T08:45:35.667Z",
+            "updatedAt": "2022-04-12T08:45:35.667Z"
+        },
+        {
+            "_id": "62552104e14304f4bf77780a",
+            "platform": {
+                "os": "linux",
+                "end": "utools"
+            },
+            "content": {
+                "type": 0,
+                "content": "sync"
+            },
+            "createdAt": "2022-04-12T06:49:40.192Z",
+            "updatedAt": "2022-04-12T06:49:40.192Z"
+        }
+    ]
+}

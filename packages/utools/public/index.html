@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <input class="iptUrl" type="text" />
+        <button class="saveBtn">确定</button>
+
+        <script>
+            const $ = document.querySelector.bind(document);
+
+            const local_url = localStorage.getItem('SERVER_URL');
+
+            const iptUrl = $('.iptUrl');
+            const saveBtn = $('.saveBtn');
+
+            iptUrl.value = local_url;
+
+            saveBtn.addEventListener('click', () => {
+                localStorage.setItem('SERVER_URL', iptUrl.value);
+            });
+            utools.hideMainWindow();
+        </script>
+    </body>
+</html>
