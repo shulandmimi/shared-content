@@ -1,16 +1,39 @@
 import qiniu from 'qiniu';
+import { read_config, write_config, resolve_config } from './config';
+import { existsOrCreate } from './file';
+import { notice } from './notice';
 
-var accessKey = '';
-var secretKey = '';
+function createToken() {
+    existsOrCreate(resolve_config(), '{}');
+    const config = read_config();
+    const { accessKey, secretKey, token: tokenInfo } = config?.qiniu || {};
+    if (!accessKey || !secretKey) {
+        notice('请输入七牛云 accessKey 和 secretKey');
+        return;
+    }
+    if (tokenInfo) {
+        const { maxAge, start, token } = tokenInfo;
+        if (start + maxAge * 1000 > Date.now()) {
+            return token;
+        }
+    }
 
-var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
+    var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
 
-const putPolicy = new qiniu.rs.PutPolicy({
-    scope: 'shared-content',
-    expires: 7200,
-    returnBody: '{ "size": { "width": $(imageInfo.width), "height": $(imageInfo.height) }, "bucket": $(bucket), "name": $(key) }',
-});
-const uploadToken = putPolicy.uploadToken(mac);
+    const putPolicy = new qiniu.rs.PutPolicy({
+        scope: 'shared-content',
+        expires: 7200,
+        returnBody: '{ "size": { "width": $(imageInfo.width), "height": $(imageInfo.height) }, "bucket": $(bucket), "name": $(key) }',
+    });
+
+    const token = putPolicy.uploadToken(mac);
+
+    write_config({ ...config, qiniu: { ...config.qiniu, token: { maxAge: 7200, start: Date.now(), token } } });
+
+    return token;
+}
+
+let uploadToken = createToken();
 
 const formUploader = new qiniu.form_up.FormUploader({});
 

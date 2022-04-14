@@ -1,5 +1,7 @@
 import { Action } from './interface';
 import { uploadFileFromDisk } from '../tools/qiniu';
+import path from 'path';
+import { createFileItem, sync } from '../tools/sync';
 interface UploadFile {
     isFile: true;
     isDirectory: false;
@@ -13,30 +15,18 @@ interface UploadDir {
     path: string;
 }
 
-/**
- * {
-  code: 'upload',
-  type: 'files',
-  payload: [
-    {
-      isFile: true,
-      isDirectory: false,
-      name: '下载.jpg',
-      path: 'C:\\Users\\Administrator\\Desktop\\下载.jpg'
+export default async function uploadFile(action: Action<UploadFile | UploadDir>) {
+    const file = action.payload;
+    if (file.isDirectory) return;
+    const filename = path.parse(file.path);
+
+    try {
+        const { name } = await uploadFileFromDisk(file.path, filename.name);
+
+        const fileItem = createFileItem(name);
+
+        await sync([fileItem]);
+    } catch (error) {
+        console.log(error);
     }
-  ]
 }
-{
-  code: 'upload',
-  type: 'files',
-  payload: [
-    {
-      isFile: false,
-      isDirectory: true,
-      name: 'homework',
-      path: 'C:\\Users\\Administrator\\Desktop\\homework'
-    }
-  ]
-}
- */
-export default async function uploadFile(action: Action<UploadFile | UploadDir>) {}

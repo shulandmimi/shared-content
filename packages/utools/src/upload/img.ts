@@ -17,7 +17,7 @@ export default async function uploadImage(action: Action<string>) {
 
         const data = await uploadFileFromDisk(filename, TEMP_FILENAME);
 
-        utools.showNotification(`${filename} 上传`);
+        utools.showNotification(`${filename} 上传成功`);
 
         const url = `${data.name}`;
 

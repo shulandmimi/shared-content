@@ -1,17 +1,17 @@
 import './src/polyfill';
-import path from 'path';
 import fs from 'fs';
 import { Action } from './src/upload/interface';
 import uploadText from './src/upload/text';
 import uploadImage from './src/upload/img';
+import { resolve_config } from './src/tools/config';
+import { existsOrCreate } from './src/tools/file';
+import uploadFile from './src/upload/file';
 
 interface ListItem {
     title: string;
     description: string;
     icon?: string;
 }
-
-const resolve_config = () => path.join(utools.getPath('temp'), 'config.json');
 
 const url = () => JSON.parse(fs.readFileSync(resolve_config(), { encoding: 'utf-8' }) || '{}').server;
 
@@ -22,10 +22,9 @@ const UPLOAD_SETTING_LIST = [
         description: '修改配置',
         callback() {
             const CONFIG_PATH = resolve_config();
-            if (!fs.existsSync(CONFIG_PATH)) {
-                fs.writeFileSync(CONFIG_PATH, JSON.stringify({}, null, 4));
-            }
+            existsOrCreate(CONFIG_PATH, '{}');
             utools.shellOpenPath(CONFIG_PATH);
+            utools.outPlugin();
         },
     },
 ];
@@ -40,6 +39,7 @@ window.exports = {
                         await uploadText(action);
                         break;
                     case 'file':
+                        await uploadFile(action);
                         break;
                     case 'img':
                         await uploadImage(action);
@@ -59,7 +59,6 @@ window.exports = {
             },
             // @ts-ignore
             select(action, selected, callback) {
-                console.log(action, selected);
                 const item = UPLOAD_SETTING_LIST.find(select => select.key === selected.key);
                 console.log(item);
                 item?.callback();
