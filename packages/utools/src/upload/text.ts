@@ -1,5 +1,4 @@
-import { DataItem, DataType } from '../interface';
-import { platform } from '../tools/platform';
+import { DataItem } from '@shared/core';
 import { createTextItem, queue, sync } from '../tools/sync';
 import { Action } from './interface';
 

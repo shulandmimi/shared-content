@@ -1,6 +1,5 @@
 import { Action } from './interface';
 import { uploadFileFromDisk } from '../tools/qiniu';
-import path from 'path';
 import { createFileItem, sync } from '../tools/sync';
 import fs from 'fs-extra';
 interface UploadFile {

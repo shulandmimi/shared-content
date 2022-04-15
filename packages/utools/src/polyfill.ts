@@ -1,6 +1,5 @@
 import { Console } from 'console';
 import fs from 'fs';
-import path from 'path';
 
 // @ts-ignore
 const LOG_FILE = LOG_PATH || utools.getPath('temp', './log.txt');

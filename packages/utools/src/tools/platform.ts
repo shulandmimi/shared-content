@@ -1,4 +1,4 @@
-import { Platform } from "../interface";
+import { Platform } from "@shared/core";
 
 export const platform: () => Platform = () => ({
     os: 'linux',

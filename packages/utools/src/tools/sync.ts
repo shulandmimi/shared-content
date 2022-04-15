@@ -1,4 +1,4 @@
-import { DataContent, DataItem, DataType, ImageData } from '../interface';
+import { DataContent, DataItem, DataType } from '@shared/core';
 import { platform } from './platform';
 
 export const queue: DataItem[] = [];

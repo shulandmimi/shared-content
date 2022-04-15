@@ -2,7 +2,6 @@ import { Action } from './interface';
 import { uploadFileFromDisk } from '../tools/qiniu';
 import path from 'path';
 import fs from 'fs-extra';
-import { platform } from '../tools/platform';
 import { createImageItem, sync } from '../tools/sync';
 
 const TEMP_FILENAME = path.join(utools.getPath('temp'), './temp.png');
