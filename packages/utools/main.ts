@@ -6,6 +6,9 @@ import uploadImage from './src/upload/img';
 import { resolve_config } from './src/tools/config';
 import { existsOrCreate } from './src/tools/file';
 import uploadFile from './src/upload/file';
+import { DataType } from '@shared/core';
+
+console.log(DataType);
 
 interface ListItem {
     title: string;

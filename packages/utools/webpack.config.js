@@ -1,6 +1,7 @@
 const path = require('path');
 const Copy = require('copy-webpack-plugin');
 const webpack = require('webpack');
+const TerserWebpack = require('terser-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -10,7 +11,7 @@ module.exports = {
         path: path.join(__dirname, './dist'),
         filename: '[name].js',
     },
-    mode: 'development',
+    mode: process.env.NODE_ENV || 'production',
     module: {
         rules: [
             {
@@ -18,6 +19,10 @@ module.exports = {
                 use: ['ts-loader'],
             },
         ],
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserWebpack({ extractComments: false })],
     },
     target: 'node',
     externals: {
