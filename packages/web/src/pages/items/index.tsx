@@ -7,6 +7,7 @@ import Text from './component/Text';
 import Image from './component/Image';
 import File from './component/File';
 import CopyTextButton from '../../components/CopyTextButton';
+import DownloadButton from '../../components/DownloadButton';
 
 const TagMap = {
     [DataType.File]: <NTag type="info">文件</NTag>,
@@ -40,6 +41,13 @@ export default defineComponent(function () {
         switch (item.type) {
             case DataType.Text:
                 return <CopyTextButton content={item.content} />;
+            case DataType.Image:
+            case DataType.File:
+                return (
+                    <DownloadButton url={`https://cdn.wdbke.top/${item.url}`} name={item.url}>
+                        下载
+                    </DownloadButton>
+                );
         }
     }
 
@@ -55,6 +63,8 @@ export default defineComponent(function () {
                                         <NSpace>
                                             <NTag size="small">{item.platform.end}</NTag>
                                             {TagMap[item.content.type]}
+                                            {/* @ts-ignore */}
+                                            <NTag>{new Date(item?.createdAt).toLocaleString()}</NTag>
                                         </NSpace>
                                     </>
                                 ),
