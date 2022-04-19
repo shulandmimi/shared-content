@@ -12,9 +12,16 @@
   "license": "ISC",
   "dependencies": {
     "@koa/router": "^10.1.1",
+    "@shared/core": "workspace:^1.0.0",
+    "@shared/moleculer-db-adapter-mongoose": "workspace:^1.0.0",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
-    "koa-static": "^5.0.0"
+    "koa-static": "^5.0.0",
+    "moleculer": "^0.14.19",
+    "moleculer-db": "^0.8.17",
+    "moleculer-web": "^0.10.4",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.0"
   },
   "devDependencies": {
     "@types/koa": "^2.13.4",

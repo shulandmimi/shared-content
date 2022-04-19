@@ -16,8 +16,6 @@ interface ListItem {
     icon?: string;
 }
 
-const url = () => JSON.parse(fs.readFileSync(resolve_config(), { encoding: 'utf-8' }) || '{}').server;
-
 const UPLOAD_SETTING_LIST = [
     {
         key: 'modifyConfig',

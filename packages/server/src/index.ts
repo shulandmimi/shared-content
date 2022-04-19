@@ -1,21 +1,12 @@
-import Koa from 'koa';
-import Bodyparser from 'koa-bodyparser';
-import router from './route';
+import { ServiceBroker } from 'moleculer';
+import APIService from 'moleculer-web';
+import path from 'path';
 
-const app = new Koa();
+// @ts-ignore
+const broker = new ServiceBroker({ logger: console, namespace: 'main' });
 
-const port = 12306;
+broker.loadServices(path.resolve(__dirname, './services/'), '**/*.ts');
 
-app.use(async (ctx, next) => {
-    const start = Date.now();
-    await next();
-    console.log(`${ctx.path} ${Date.now() - start}ms`);
-});
+// broker.loadService(path.resolve(__dirname, './services/api-gateway.service.ts'));
 
-app.use(Bodyparser());
-
-app.use(router.routes());
-
-app.listen(port, () => {
-    console.log(`listen on http://127.0.0.1:${port}`);
-});
+broker.start().catch(err => console.log(err.message));

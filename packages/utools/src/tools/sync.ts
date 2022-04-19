@@ -1,5 +1,6 @@
 import { DataContent, DataItem, DataType } from '@shared/core';
 import { platform } from './platform';
+import { read_config } from './config';
 
 export const queue: DataItem[] = [];
 
@@ -16,7 +17,7 @@ export async function sync(items: DataItem[]) {
     }
     datas.push(...items);
 
-    const response = await fetch(`https://qcrqwt.api.cloudendpoint.cn/items-create`, {
+    const response = await fetch(`${read_config().server}/items/sync`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',

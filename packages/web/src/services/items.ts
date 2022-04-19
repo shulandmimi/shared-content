@@ -36,7 +36,7 @@ interface FailedState extends ResponseState {
 }
 
 export async function fetchItems(): Promise<SuccessState<DataItem[]> | FailedState> {
-    const response = await fetch('https://qcrqwt.api.cloudendpoint.cn/items-fetch');
+    const response = await fetch('http://127.0.0.1:12306/items/list');
     if (response.ok) {
         return await response.json();
     } else {
