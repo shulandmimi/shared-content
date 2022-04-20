@@ -1,5 +1,6 @@
 import { ServiceSchema } from 'moleculer';
 import ItemsModel from '../../model/items';
+import { FilterOptions } from 'moleculer-db';
 
 export default {
     name: 'items',
@@ -7,16 +8,21 @@ export default {
     actions: {
         async list(ctx) {
             return {
-                data: await this._find(ctx, {}),
+                data: await this._find(ctx, { sort: '-createdAt' } as FilterOptions),
                 status: 0,
             };
         },
         sync: {
             handler(ctx) {
-                const { body, params } = ctx.params;
-                console.log(body);
-                this._insert(ctx, { entities: body });
-                return body;
+                const { body } = ctx.params;
+                try {
+                    this._insert(ctx, { entities: body });
+                } catch (error) {
+                    console.log(this.logger.error(error));
+                }
+                return {
+                    status: 0,
+                };
             },
         },
     },
