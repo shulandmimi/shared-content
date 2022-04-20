@@ -2,10 +2,11 @@ import { defineComponent } from 'vue';
 import { NCard, NList, NListItem, NTag, NSpace } from 'naive-ui';
 import { fetchItems } from '../../services/items';
 import useFetch from '../../hooks/useFetch';
-import { DataContent, DataItem, DataType } from '../../../../core/src/types';
+import { DataContent, DataType } from '@shared/core';
 import Text from './component/Text';
 import Image from './component/Image';
 import File from './component/File';
+import SettingDialog from './component/SettingsDialog';
 import CopyTextButton from '../../components/CopyTextButton';
 import DownloadButton from '../../components/DownloadButton';
 
@@ -44,7 +45,7 @@ export default defineComponent(function () {
             case DataType.Image:
             case DataType.File:
                 return (
-                    <DownloadButton url={`https://cdn.wdbke.top/${item.url}`} name={item.url}>
+                    <DownloadButton url={item.url} name={item.url}>
                         下载
                     </DownloadButton>
                 );
@@ -53,6 +54,7 @@ export default defineComponent(function () {
 
     return () => (
         <div style={{ boxSizing: 'border-box', padding: '0px 200px' }}>
+            <SettingDialog></SettingDialog>
             <NList>
                 {state.data?.map(item => (
                     <NListItem>

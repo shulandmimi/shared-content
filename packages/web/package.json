@@ -9,6 +9,8 @@
     "start": "pnpm dev"
   },
   "dependencies": {
+    "@shared/core": "workspace:^1.0.0",
+    "lodash": "^4.17.21",
     "naive-ui": "^2.28.0",
     "vue": "^3.2.25"
   },
