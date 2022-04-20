@@ -33,6 +33,10 @@ function createToken() {
     return token;
 }
 
+export function resolve_save_address() {
+    return read_config().qiniu?.address;
+}
+
 let uploadToken = createToken();
 
 const formUploader = new qiniu.form_up.FormUploader({});

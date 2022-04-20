@@ -1,5 +1,5 @@
 import { Action } from './interface';
-import { uploadFileFromDisk } from '../tools/qiniu';
+import { resolve_save_address, uploadFileFromDisk } from '../tools/qiniu';
 import path from 'path';
 import fs from 'fs-extra';
 import { createImageItem, sync } from '../tools/sync';
@@ -18,7 +18,7 @@ export default async function uploadImage(action: Action<string>) {
 
         utools.showNotification(`${filename} 上传成功`);
 
-        const url = `${data.name}`;
+        const url = `${resolve_save_address()}/${data.name}`;
 
         const imageItem = createImageItem(url);
 

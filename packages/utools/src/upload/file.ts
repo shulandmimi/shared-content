@@ -1,5 +1,5 @@
 import { Action } from './interface';
-import { uploadFileFromDisk } from '../tools/qiniu';
+import { resolve_save_address, uploadFileFromDisk } from '../tools/qiniu';
 import { createFileItem, sync } from '../tools/sync';
 import fs from 'fs-extra';
 interface UploadFile {
@@ -23,7 +23,7 @@ export default async function uploadFile(action: Action<UploadFile | UploadDir>)
     try {
         const { name } = await uploadFileFromDisk(file.path, file.name);
 
-        const fileItem = createFileItem(name);
+        const fileItem = createFileItem(resolve_save_address() + '/' + name);
 
         await sync([fileItem]);
     } catch (error) {

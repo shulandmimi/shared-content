@@ -2,6 +2,8 @@ const path = require('path');
 const Copy = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const TerserWebpack = require('terser-webpack-plugin');
+const pkg = require('./package.json');
+const lodash = require('lodash');
 
 module.exports = {
     entry: {
@@ -42,6 +44,7 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             LOG_PATH: JSON.stringify(path.join(process.cwd(), './log.txt')),
+            APPNAME: JSON.stringify(lodash.camelCase(pkg.name)),
         }),
     ],
 };
