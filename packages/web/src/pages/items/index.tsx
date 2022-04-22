@@ -1,5 +1,5 @@
-import { defineComponent } from 'vue';
-import { NCard, NList, NListItem, NTag, NSpace, NAffix } from 'naive-ui';
+import { defineComponent, watch, watchEffect, toRefs, onUnmounted } from 'vue';
+import { NCard, NList, NListItem, NTag, NSpace, NAffix, NSpin, useLoadingBar } from 'naive-ui';
 import { fetchItems } from '@/services/items';
 import useFetch from '@/hooks/useFetch';
 import { DataContent, DataType } from '@shared/core';
@@ -18,6 +18,7 @@ const TagMap = {
 };
 
 export default defineComponent(function () {
+    const loadingBar = useLoadingBar();
     const serverList = useServerList();
     const { run, state } = useFetch(async () => {
         const res = await fetchItems(serverList.current.url);
@@ -27,7 +28,15 @@ export default defineComponent(function () {
         return [];
     });
 
-    run();
+    watch([toRefs(serverList).currentIndex], () => run(), { immediate: true });
+    watch([toRefs(state).loading], () => {
+        if (state.loading) {
+            loadingBar.start();
+        } else {
+            state.err ? loadingBar.error() : loadingBar.finish();
+        }
+    });
+    onUnmounted(() => loadingBar.finish());
 
     function renderShareContent(item: DataContent) {
         switch (item.type) {
@@ -58,28 +67,30 @@ export default defineComponent(function () {
         <div style={{ boxSizing: 'border-box', padding: '0px 20%' }}>
             <SettingDialog />
 
-            <NList>
-                {state.data?.map(item => (
-                    <NListItem>
-                        <NCard
-                            v-slots={{
-                                header: () => (
-                                    <>
-                                        <NSpace>
-                                            <NTag size="small">{item.platform.end}</NTag>
-                                            {TagMap[item.content.type]}
-                                            {/* @ts-ignore */}
-                                            <NTag>{new Date(item?.createdAt).toLocaleString()}</NTag>
-                                        </NSpace>
-                                    </>
-                                ),
-                                'header-extra': () => <span>{renderShareControl(item.content)}</span>,
-                            }}>
-                            {renderShareContent(item.content)}
-                        </NCard>
-                    </NListItem>
-                ))}
-            </NList>
+            <NSpin show={state.loading}>
+                <NList>
+                    {state.data?.map(item => (
+                        <NListItem>
+                            <NCard
+                                v-slots={{
+                                    header: () => (
+                                        <>
+                                            <NSpace>
+                                                <NTag size="small">{item.platform.end}</NTag>
+                                                {TagMap[item.content.type]}
+                                                {/* @ts-ignore */}
+                                                <NTag>{new Date(item?.createdAt).toLocaleString()}</NTag>
+                                            </NSpace>
+                                        </>
+                                    ),
+                                    'header-extra': () => <span>{renderShareControl(item.content)}</span>,
+                                }}>
+                                {renderShareContent(item.content)}
+                            </NCard>
+                        </NListItem>
+                    ))}
+                </NList>
+            </NSpin>
         </div>
     );
 });
