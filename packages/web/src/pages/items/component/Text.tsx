@@ -1,6 +1,5 @@
 import { defineComponent } from 'vue';
 import { NEllipsis } from 'naive-ui';
-import { TextData } from '../../../../../core/src/types';
 
 export default defineComponent({
     props: {

@@ -39,8 +39,8 @@ interface FailedState extends ResponseState {
     msg: string;
 }
 
-export async function fetchItems(): Promise<SuccessState<DataItem[]> | FailedState> {
-    const response = await fetch('http://127.0.0.1:12306/items/list');
+export async function fetchItems(url: string): Promise<SuccessState<DataItem[]> | FailedState> {
+    const response = await fetch(`${url}/items/list`);
     if (response.ok) {
         return await response.json();
     } else {

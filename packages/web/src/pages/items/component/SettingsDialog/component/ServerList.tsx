@@ -3,6 +3,9 @@ import { defineComponent, ref, reactive } from 'vue';
 import ModifyList from './component/ModifyList';
 import StaticList from './component/StaticList';
 
+export const SERVER_LIST_KEY = 'SETTINGS.serverList';
+export const SERVER_CURRENT_INDEX = 'SETTINGS.serverList.currentIndex';
+
 export default defineComponent({
     name: 'ServerList',
     setup() {

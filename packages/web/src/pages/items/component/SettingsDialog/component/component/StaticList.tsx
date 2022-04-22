@@ -1,9 +1,11 @@
 import { defineComponent, PropType, reactive } from 'vue';
-import { NButton, NList, NListItem, NSpace } from 'naive-ui';
+import { NButton, NList, NListItem, NSpace, NTag } from 'naive-ui';
 import useLocale from '@/hooks/useLocale';
 import useFetch from '@/hooks/useFetch';
 import { validServer } from '@/services/items';
 import { ServerItem } from './ModifyList';
+import { SERVER_LIST_KEY } from '../ServerList';
+import useServerList from '../hooks/useServerList';
 
 export default defineComponent({
     name: 'StaticList',
@@ -15,23 +17,22 @@ export default defineComponent({
     },
 
     setup(props) {
-        const localSettings = useLocale<ServerItem[]>('SETTINGS.serverList', {
-            default: [],
-        });
-
-        const state = reactive({
-            loading: true,
-        });
-
-        function validAllServerList() {
-            // return validServer(localSettings.value);
-        }
+        const serverList = useServerList();
 
         return () => (
             <>
                 <NList>
-                    {localSettings.value.map(item => (
-                        <NListItem>{item.url}</NListItem>
+                    {serverList.serverList.map((item, index) => (
+                        <NListItem>
+                            <span
+                                color={index === serverList.currentIndex ? 'success' : 'default'}
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => {
+                                    serverList.currentIndex = index;
+                                }}>
+                                {item.url} {index === serverList.currentIndex ? ' ✔' : ''}
+                            </span>
+                        </NListItem>
                     ))}
                 </NList>
                 <NSpace justify="end">

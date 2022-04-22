@@ -16,6 +16,9 @@ const defaultOptions: Partial<Options<any>> = {
     },
 };
 
+const map = new Map();
+const quoteMap = new Map();
+
 export default function useLocale<T>(key: string, options: Partial<Options<T>>): Ref<UnwrapRef<T>> {
     const _options = merge(defaultOptions, options);
     const { serializa } = _options as Options<T>;
@@ -36,7 +39,9 @@ export default function useLocale<T>(key: string, options: Partial<Options<T>>):
         value = _options.default;
     }
 
-    const state = ref<T>(value as unknown as T);
+    const state = map.has(key) ? map.get(key) : ref<T>(value as unknown as T);
+    if (!map.has(key)) map.set(key, state);
+    quoteMap.set(key, (quoteMap.get(key) || 0) + 1);
 
     // 多页面数据同步
     const handler = () => {
@@ -57,6 +62,11 @@ export default function useLocale<T>(key: string, options: Partial<Options<T>>):
     onUnmounted(() => {
         sync();
         window.removeEventListener('storage', handler);
+        quoteMap.set(key, (quoteMap.get(key) || 0) - 1);
+        if (quoteMap.get(key) <= 0) {
+            map.delete(key);
+            quoteMap.delete(key);
+        }
     });
 
     // 监听改变

@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { FormInst, NButton, NForm, NFormItem, NInput, NSpace } from 'naive-ui';
 import { defineComponent, ref, PropType } from 'vue';
-import useLocale from '../../../../../../hooks/useLocale';
-import { validServer } from '../../../../../../services/items';
+import useLocale from '@/hooks/useLocale';
+import { validServer } from '@/services/items';
 
 const validURL = (v: string) =>
     /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/.test(v) ||

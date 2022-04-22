@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue';
-import { NCard, NList, NListItem, NTag, NSpace } from 'naive-ui';
+import { NCard, NList, NListItem, NTag, NSpace, NAffix } from 'naive-ui';
 import { fetchItems } from '@/services/items';
 import useFetch from '@/hooks/useFetch';
 import { DataContent, DataType } from '@shared/core';
@@ -9,6 +9,7 @@ import File from './component/File';
 import SettingDialog from './component/SettingsDialog';
 import CopyTextButton from '@/components/CopyTextButton';
 import DownloadButton from '@/components/DownloadButton';
+import useServerList from './component/SettingsDialog/component/hooks/useServerList';
 
 const TagMap = {
     [DataType.File]: <NTag type="info">文件</NTag>,
@@ -17,8 +18,9 @@ const TagMap = {
 };
 
 export default defineComponent(function () {
+    const serverList = useServerList();
     const { run, state } = useFetch(async () => {
-        const res = await fetchItems();
+        const res = await fetchItems(serverList.current.url);
         if (!res.status) {
             return res.data;
         }
@@ -53,8 +55,9 @@ export default defineComponent(function () {
     }
 
     return () => (
-        <div style={{ boxSizing: 'border-box', padding: '0px 200px' }}>
+        <div style={{ boxSizing: 'border-box', padding: '0px 20%' }}>
             <SettingDialog />
+
             <NList>
                 {state.data?.map(item => (
                     <NListItem>
