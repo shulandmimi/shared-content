@@ -30,6 +30,10 @@ interface SuccessState<T> extends ResponseState {
     msg?: string;
 }
 
+interface OnlyS extends ResponseState {
+    status: 0;
+}
+
 interface FailedState extends ResponseState {
     status: 1;
     msg: string;
@@ -37,6 +41,19 @@ interface FailedState extends ResponseState {
 
 export async function fetchItems(): Promise<SuccessState<DataItem[]> | FailedState> {
     const response = await fetch('http://127.0.0.1:12306/items/list');
+    if (response.ok) {
+        return await response.json();
+    } else {
+        return {
+            status: 1,
+            msg: await response.text(),
+        };
+    }
+}
+
+export async function validServer(url: string): Promise<OnlyS | FailedState> {
+    const response = await fetch(`${url}/items/valid`);
+
     if (response.ok) {
         return await response.json();
     } else {

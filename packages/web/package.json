@@ -12,6 +12,7 @@
     "@shared/core": "workspace:^1.0.0",
     "lodash": "^4.17.21",
     "naive-ui": "^2.28.0",
+    "vite-tsconfig-paths": "^3.4.1",
     "vue": "^3.2.25"
   },
   "devDependencies": {

@@ -1,33 +1,53 @@
 import _ from 'lodash';
-import { NDrawer, NDrawerContent, useMessage } from 'naive-ui';
-import { defineComponent } from 'vue';
-import useLocale from '../../../../hooks/useLocale';
+import { NDrawer, NDrawerContent, NButton } from 'naive-ui';
+import { defineComponent, Prop, reactive, ref, PropType, Ref } from 'vue';
 import ServerList from './component/ServerList';
+
+interface DrawerActionType {
+    close(): void;
+    open(): void;
+}
 
 export default defineComponent({
     name: 'SettingDialog',
-    setup() {
-        const message = useMessage();
-
-        const state = useLocale('SETTINGS', {
-            default: [1234],
+    props: {
+        drawerActionRef: {
+            type: Object as PropType<Ref<DrawerActionType>>,
+        },
+    },
+    setup(props) {
+        const state = reactive({
+            drawerVisiable: true,
         });
 
+        const actions: DrawerActionType = {
+            close() {
+                state.drawerVisiable = false;
+            },
+            open() {
+                state.drawerVisiable = true;
+            },
+        };
+        if (props.drawerActionRef) props.drawerActionRef.value = actions;
+
         return () => (
-            <NDrawer show={false} width="30%" style={{ minWidth: '200px', maxWidth: '50%' }}>
+            <NDrawer
+                maskClosable
+                closeOnEsc
+                onHide={actions.close}
+                show={state.drawerVisiable}
+                width="30%"
+                style={{ minWidth: '200px', maxWidth: '50%' }}>
                 <NDrawerContent
-                    title="哈哈哈"
+                    title="设置"
                     v-slots={{
-                        header: () => 'header',
-                        footer: () => 'footer',
+                        footer: () => (
+                            <NButton onClick={actions.close} text>
+                                关闭
+                            </NButton>
+                        ),
                     }}>
-                    <ServerList
-                        initialstate={state.value}
-                        onChange={(res: typeof state.value) => {
-                            state.value = res;
-                            message.success('更新成功');
-                        }}
-                    />
+                    <ServerList />
                 </NDrawerContent>
             </NDrawer>
         );

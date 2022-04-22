@@ -1,4 +1,4 @@
-import { Ref, ref, UnwrapRef, watchEffect, onUnmounted, onMounted } from 'vue';
+import { Ref, ref, UnwrapRef, watchEffect, onUnmounted, onMounted, watch } from 'vue';
 import { merge } from 'lodash';
 
 interface Options<T> {
@@ -49,16 +49,18 @@ export default function useLocale<T>(key: string, options: Partial<Options<T>>):
         state.value = getValueFromString(raw, _options.default);
     };
 
+    const sync = () => {
+        localStorage.setItem(key, (raw = serializa.encode(state.value)));
+    };
+
     window.addEventListener('storage', handler);
-    onUnmounted(() => window.removeEventListener('storage', handler));
+    onUnmounted(() => {
+        sync();
+        window.removeEventListener('storage', handler);
+    });
 
     // 监听改变
-    watchEffect(
-        () => {
-            localStorage.setItem(key, (raw = serializa.encode(state.value)));
-        },
-        { flush: 'post' }
-    );
+    watch([state], sync);
 
     return state;
 }
