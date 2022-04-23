@@ -3,7 +3,7 @@ import { NDrawer, NDrawerContent, NButton } from 'naive-ui';
 import { defineComponent, Prop, reactive, ref, PropType, Ref } from 'vue';
 import ServerList from './component/ServerList';
 
-interface DrawerActionType {
+export interface DrawerActionType {
     close(): void;
     open(): void;
 }
@@ -12,12 +12,12 @@ export default defineComponent({
     name: 'SettingDialog',
     props: {
         drawerActionRef: {
-            type: Object as PropType<Ref<DrawerActionType>>,
+            type: Object as PropType<Ref<DrawerActionType | undefined>>,
         },
     },
     setup(props) {
         const state = reactive({
-            drawerVisiable: true,
+            drawerVisiable: false,
         });
 
         const actions: DrawerActionType = {
@@ -34,7 +34,7 @@ export default defineComponent({
             <NDrawer
                 maskClosable
                 closeOnEsc
-                onHide={actions.close}
+                onUpdateShow={actions.close}
                 show={state.drawerVisiable}
                 width="30%"
                 style={{ minWidth: '200px', maxWidth: '50%' }}>

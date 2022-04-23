@@ -39,8 +39,22 @@ interface FailedState extends ResponseState {
     msg: string;
 }
 
-export async function fetchItems(url: string): Promise<SuccessState<DataItem[]> | FailedState> {
-    const response = await fetch(`${url}/items/list`);
+interface UnAuthorized extends ResponseState {
+    status: 3;
+    msg: string;
+}
+
+type Failed = FailedState | UnAuthorized;
+
+export async function fetchItems(url: string, token: string): Promise<SuccessState<DataItem[]> | Failed> {
+    const response = await fetch(`${url}/items/list`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({ token }),
+    });
+    console.log(response);
     if (response.ok) {
         return await response.json();
     } else {
@@ -51,8 +65,14 @@ export async function fetchItems(url: string): Promise<SuccessState<DataItem[]> 
     }
 }
 
-export async function validServer(url: string): Promise<OnlyS | FailedState> {
-    const response = await fetch(`${url}/items/valid`);
+export async function validServer(url: string, token: string): Promise<OnlyS | Failed> {
+    const response = await fetch(`${url}/items/valid`, {
+        method: 'POST',
+        body: JSON.stringify({ token }),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
 
     if (response.ok) {
         return await response.json();

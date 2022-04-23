@@ -1,15 +1,16 @@
-import { defineComponent, watch, watchEffect, toRefs, onUnmounted } from 'vue';
-import { NCard, NList, NListItem, NTag, NSpace, NAffix, NSpin, useLoadingBar } from 'naive-ui';
+import { defineComponent, watch, toRefs, onUnmounted, ref } from 'vue';
+import { NCard, NList, NListItem, NTag, NSpace, NAffix, NSpin, useLoadingBar, NResult } from 'naive-ui';
 import { fetchItems } from '@/services/items';
 import useFetch from '@/hooks/useFetch';
 import { DataContent, DataType } from '@shared/core';
 import Text from './component/Text';
 import Image from './component/Image';
 import File from './component/File';
-import SettingDialog from './component/SettingsDialog';
+import SettingDialog, { DrawerActionType } from './component/SettingsDialog';
 import CopyTextButton from '@/components/CopyTextButton';
 import DownloadButton from '@/components/DownloadButton';
 import useServerList from './component/SettingsDialog/component/hooks/useServerList';
+import SettingIcon from '@/components/icons/Setting';
 
 const TagMap = {
     [DataType.File]: <NTag type="info">文件</NTag>,
@@ -20,8 +21,10 @@ const TagMap = {
 export default defineComponent(function () {
     const loadingBar = useLoadingBar();
     const serverList = useServerList();
+    const dialogRef = ref<DrawerActionType>();
+
     const { run, state } = useFetch(async () => {
-        const res = await fetchItems(serverList.current.url);
+        const res = await fetchItems(serverList.current.url, serverList.current.credentails!);
         if (!res.status) {
             return res.data;
         }
@@ -65,9 +68,19 @@ export default defineComponent(function () {
 
     return () => (
         <div style={{ boxSizing: 'border-box', padding: '0px 20%' }}>
-            <SettingDialog />
-
+            <SettingDialog drawerActionRef={dialogRef} />
+            <div
+                onClick={() => {
+                    dialogRef.value?.open();
+                }}
+                style={{ position: 'fixed', width: '20px', height: '20px', top: '10px', right: '10px', cursor: 'pointer' }}>
+                <SettingIcon width={20} height={20} color="red" />
+            </div>
             <NSpin show={state.loading}>
+                <div style={{ marginTop: '50px' }}>
+                    {state.err && <NResult status="error" size="small" description="发生错误" />}
+                    {state.data?.length === 0 && <NResult status="warning" size="small" description="暂时没有数据"></NResult>}
+                </div>
                 <NList>
                     {state.data?.map(item => (
                         <NListItem>

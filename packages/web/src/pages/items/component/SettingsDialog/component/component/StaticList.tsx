@@ -1,10 +1,5 @@
-import { defineComponent, PropType, reactive } from 'vue';
-import { NButton, NList, NListItem, NSpace, NTag } from 'naive-ui';
-import useLocale from '@/hooks/useLocale';
-import useFetch from '@/hooks/useFetch';
-import { validServer } from '@/services/items';
-import { ServerItem } from './ModifyList';
-import { SERVER_LIST_KEY } from '../ServerList';
+import { defineComponent, PropType } from 'vue';
+import { NButton, NList, NListItem, NSpace } from 'naive-ui';
 import useServerList from '../hooks/useServerList';
 
 export default defineComponent({
@@ -36,7 +31,9 @@ export default defineComponent({
                     ))}
                 </NList>
                 <NSpace justify="end">
-                    <NButton onClick={props.onModify}>修改</NButton>
+                    <NButton size="small" onClick={props.onModify}>
+                        修改
+                    </NButton>
                 </NSpace>
             </>
         );
