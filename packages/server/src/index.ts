@@ -1,5 +1,4 @@
 import { ServiceBroker } from 'moleculer';
-import APIService from 'moleculer-web';
 import path from 'path';
 
 // @ts-ignore
