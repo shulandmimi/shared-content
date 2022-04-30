@@ -1,4 +1,7 @@
+import { fetchToken } from '@/services/items';
+import { isNil } from 'lodash';
 import * as qiniu from 'qiniu-js';
+import { ServerToken } from '../component/SettingsDialog/component/component/ModifyList';
 
 interface UploadOptions {
     file: File;
@@ -6,12 +9,28 @@ interface UploadOptions {
     token: string;
 }
 
+export async function createToken(url: string, token: ServerToken | null, serverCrendentails: string): Promise<ServerToken | null> {
+    if (!isNil(token)) {
+        if (token.start + token.expires < Date.now()) {
+            return token;
+        }
+    }
+    const res = await fetchToken(url, serverCrendentails);
+
+    if (res.status !== 0) {
+        console.log(res.msg);
+        return null;
+    }
+
+    return res.data;
+}
+
 export default function upload(context: UploadOptions, callback: (progress: number) => void): Promise<string> {
     const { file, filename, token } = context;
     const obserable = qiniu.upload(file, filename, token, {});
 
-    const p = new Promise<string>((resolve, reject) => {
-        const observer = obserable.subscribe({
+    return new Promise<string>((resolve, reject) => {
+        obserable.subscribe({
             next(res) {
                 callback?.(res.total.percent);
             },
@@ -22,11 +41,7 @@ export default function upload(context: UploadOptions, callback: (progress: numb
                 resolve(res.name);
             },
         });
-        p.finally(() => {
-            observer.unsubscribe();
-        });
     });
-    return p;
 }
 
 export async function getURL(token: string): Promise<string> {

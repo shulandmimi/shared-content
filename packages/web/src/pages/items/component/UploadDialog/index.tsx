@@ -1,12 +1,11 @@
-import { NDrawer, NSelect, NSpin, NTabPane, NTabs, SelectOption, useMessage } from 'naive-ui';
+import { NDrawer, NSelect, NSpin, NTabPane, NTabs, useMessage } from 'naive-ui';
 import { defineComponent, Ref, PropType, reactive, computed } from 'vue';
 import Text from './Text';
 import Image from './Image';
 import File from './File';
 import _ from 'lodash';
 import useServerList from '../SettingsDialog/component/hooks/useServerList';
-import { DataItem, DataContent } from '@shared/core';
-import { createDataItem } from '../../utools/dataitem';
+import { DataItem } from '@shared/core';
 import { syncItems } from '@/services/items';
 import useFetch from '@/hooks/useFetch';
 
@@ -61,10 +60,10 @@ export default defineComponent({
                             <Text onSync={run}></Text>
                         </NTabPane>
                         <NTabPane name="image" tab="图片">
-                            <Image onSync={run}></Image>
+                            <Image onSync={run} onProgress={console.log}></Image>
                         </NTabPane>
                         <NTabPane name="file" tab="文件">
-                            <File></File>
+                            <File onSync={run} onProgress={console.log}></File>
                         </NTabPane>
                     </NTabs>
                 </NSpin>
@@ -72,3 +71,6 @@ export default defineComponent({
         );
     },
 });
+function createToken() {
+    throw new Error('Function not implemented.');
+}

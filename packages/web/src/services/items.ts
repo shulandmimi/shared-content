@@ -89,7 +89,13 @@ interface Token {
 }
 
 export async function fetchToken(url: string, token: string): Promise<SuccessState<Token> | Failed> {
-    const res = await fetch(`${url}/items/token`);
+    const res = await fetch(`${url}/items/token`, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: token }),
+    });
 
     if (res.ok) {
         return res.json();
@@ -99,4 +105,7 @@ export async function fetchToken(url: string, token: string): Promise<SuccessSta
             msg: await res.text(),
         };
     }
+}
+function createToken() {
+    throw new Error('Function not implemented.');
 }
