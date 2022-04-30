@@ -23,6 +23,9 @@ export default function useFetch<T, Args extends unknown[]>(callback: (...args: 
                 err: undefined,
             });
         } catch (error) {
+            if(process.env.NODE_ENV !== 'production') {
+                console.error(error);
+            }
             Object.assign(state, {
                 loading: false,
                 data: undefined,

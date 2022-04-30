@@ -1,18 +1,16 @@
-import { DataItem } from '../../../core/src/types';
+import { DataItem } from '@shared/core';
 
-export async function SaveItems(items: DataItem) {
-    const response = await fetch('https://qcrqwt.api.cloudendpoint.cn/items-create', {
+export async function syncItems(url: string, items: DataItem[], token: string): Promise<OnlyS | Failed> {
+    const response = await fetch(`${url}/items/sync`, {
         headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json',
         },
-        body: JSON.stringify(items),
+        method: 'POST',
+        body: JSON.stringify({ data: items, token }),
     });
 
     if (response.ok) {
-        return {
-            status: 0,
-        };
+        return response.json();
     } else {
         return {
             status: 1,
@@ -80,6 +78,25 @@ export async function validServer(url: string, token: string): Promise<OnlyS | F
         return {
             status: 1,
             msg: await response.text(),
+        };
+    }
+}
+
+interface Token {
+    token: string;
+    start: number;
+    expires: number;
+}
+
+export async function fetchToken(url: string, token: string): Promise<SuccessState<Token> | Failed> {
+    const res = await fetch(`${url}/items/token`);
+
+    if (res.ok) {
+        return res.json();
+    } else {
+        return {
+            status: 1,
+            msg: await res.text(),
         };
     }
 }

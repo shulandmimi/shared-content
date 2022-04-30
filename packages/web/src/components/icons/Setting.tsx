@@ -3,6 +3,7 @@ import { IconOption } from './interface';
 export default function SettingIcon(props: IconOption) {
     return (
         <svg
+            onClick={props.onClick}
             // @ts-ignore
             t="1650677936858"
             class="icon"

@@ -1,9 +1,6 @@
 import CheckIcon from '@/components/icons/CheckIcon';
 import { defineComponent, PropType } from 'vue';
 
-interface ServerVerifyOption {
-    verify: boolean;
-}
 
 export default defineComponent({
     name: 'ServerVerify',

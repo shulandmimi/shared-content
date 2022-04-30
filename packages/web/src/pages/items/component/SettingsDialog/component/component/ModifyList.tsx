@@ -10,9 +10,15 @@ const validURL = (v: string) =>
     /^((ht|f)tps?:\/\/)?[\w-]+(\.[\w-]+)+:\d{1,5}\/?$/.test(v);
 
 export interface ServerItem {
+    id: string;
     verify: {
         success: boolean;
         credentails?: boolean;
+    };
+    token?: {
+        token: string;
+        expires: number;
+        start: number;
     };
     url: string;
     credentails?: string;
@@ -44,7 +50,7 @@ export default defineComponent({
         }
 
         function addItem() {
-            modelRef.value.push({ verify: { success: false }, url: '' });
+            modelRef.value.push({ id: Math.random().toString(16).slice(2, -1), verify: { success: false }, url: '' });
         }
         function deleteItem(index: number) {
             modelRef.value.splice(index, 1);

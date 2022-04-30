@@ -7,10 +7,12 @@ import Text from './component/Text';
 import Image from './component/Image';
 import File from './component/File';
 import SettingDialog, { DrawerActionType } from './component/SettingsDialog';
+import UploadDialog, { UploadDrawerActions } from './component/UploadDialog';
 import CopyTextButton from '@/components/CopyTextButton';
 import DownloadButton from '@/components/DownloadButton';
 import useServerList from './component/SettingsDialog/component/hooks/useServerList';
 import SettingIcon from '@/components/icons/Setting';
+import SendIcon from '@/components/icons/SendIcon';
 
 const TagMap = {
     [DataType.File]: <NTag type="info">文件</NTag>,
@@ -22,6 +24,7 @@ export default defineComponent(function () {
     const loadingBar = useLoadingBar();
     const serverList = useServerList();
     const dialogRef = ref<DrawerActionType>();
+    const uploadDrawerRef = ref<UploadDrawerActions>();
 
     const { run, state } = useFetch(async () => {
         const res = await fetchItems(serverList.current.url, serverList.current.credentails!);
@@ -69,12 +72,23 @@ export default defineComponent(function () {
     return () => (
         <div style={{ boxSizing: 'border-box', padding: '0px 20%' }}>
             <SettingDialog drawerActionRef={dialogRef} />
+            <UploadDialog drawerActionRef={uploadDrawerRef} />
             <div
-                onClick={() => {
-                    dialogRef.value?.open();
-                }}
-                style={{ position: 'fixed', width: '20px', height: '20px', top: '10px', right: '10px', cursor: 'pointer' }}>
-                <SettingIcon width={20} height={20} color="red" />
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'fixed',
+                    width: '20px',
+                    top: '10px',
+                    right: '10px',
+                    cursor: 'pointer',
+                }}>
+                <SettingIcon
+                    onClick={() => {
+                        dialogRef.value?.open();
+                    }}
+                />
+                <SendIcon onClick={() => uploadDrawerRef.value?.open()}></SendIcon>
             </div>
             <NSpin show={state.loading}>
                 <div style={{ marginTop: '50px' }}>
