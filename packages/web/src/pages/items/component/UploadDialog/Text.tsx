@@ -1,6 +1,6 @@
 import { NButton, NInput } from 'naive-ui';
-import { defineComponent, PropType, ref, watch } from 'vue';
-import { TextData, DataItem } from '@shared/core';
+import { defineComponent, PropType, ref } from 'vue';
+import { DataItem } from '@shared/core';
 import { createTextItem } from '../../utools/dataitem';
 
 export default defineComponent({
@@ -18,7 +18,9 @@ export default defineComponent({
                 <NButton
                     onClick={() => {
                         props.onSync?.(createTextItem(value.value));
-                    }}></NButton>
+                    }}>
+                    上传
+                </NButton>
             </div>
         );
     },
