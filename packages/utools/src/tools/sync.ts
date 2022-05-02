@@ -16,14 +16,17 @@ export async function sync(items: DataItem[]) {
         datas.push(...queue);
     }
     datas.push(...items);
-
-    const response = await fetch(`${read_config().server}/items/sync`, {
+    const { url, credentailes } = read_config().server || {};
+    const response = await fetch(`${url}/items/sync`, {
         method: 'POST',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(datas),
+        body: JSON.stringify({
+            token: credentailes,
+            data: datas,
+        }),
     });
 
     if (!response.ok) {
