@@ -74,11 +74,12 @@ export default defineComponent({
                                     },
                                 },
                             ]}>
-                            <NInput value={[item.url, 'value']} placeholder="请输入服务器地址" />
+                            <NInput v-model={[item.url, 'value']} placeholder="请输入服务器地址" />
                             <NButton style={{ marginLeft: '10px' }} onClick={() => deleteItem(index)}>
                                 x
                             </NButton>
                         </NFormItem>
+
                         <NFormItem path={index.toString()} label="校验">
                             <NInput v-model={[item.credentails, 'value']} placeholder="请输入服务器校验token" />
                         </NFormItem>
