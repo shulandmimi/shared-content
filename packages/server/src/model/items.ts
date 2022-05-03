@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 export default {
     name: 'ItemsModel',
     mixins: [DbService],
-    adapter: new MongooseAdapter('mongodb://localhost:27017', {
+    adapter: new MongooseAdapter(`mongodb://${process.env.MONGODB_HOST || '127.0.0.1:27017'}`, {
         auth: {
             username: process.env.MONGODB_USERNAME,
             password: process.env.MONGODB_PASSWORD,

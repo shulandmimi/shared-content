@@ -2,8 +2,9 @@
   "name": "share",
   "version": "1.0.0",
   "description": "read copy content",
-  "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

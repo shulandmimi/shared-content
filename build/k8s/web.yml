@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: shared-content-web
+    labels:
+        app: shared-content-web
+        type: frontend
+        group: shared-content
+
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: shared-content-web
+    template:
+        metadata:
+            labels:
+                app: shared-content-web
+        spec:
+            # imagePullSecrets:
+            containers:
+                - name: shared-content-web
+                  image: shulandmimi/shared-content:web-a8b7204d4e48c39f3856af9986120e2f03f0f1c7
+                  ports:
+                      - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: shared-content-web-service
+    labels:
+        app: shared-content-web
+        type: frontend
+        group: shared-content
+spec:
+    selector:
+        app: shared-content-web
+    ports:
+        - name: shared-web-http
+          port: 80
+          targetPort: 80
+          nodePort: 32310
+    type: NodePort
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: shared-content-web-ingress
+    labels:
+        app: shared-content-web-ingress
+        type: frontend
+        group: shared-content
+    annotations:
+        kubernetes.io/ingress.class: 'nginx'
+        nginx.ingress.kubernetes.io/use-regex: 'true'
+
+spec:
+    tls:
+        - hosts:
+              - shared.wdbke.top
+    rules:
+        - host: shared.wdbke.top
+          http:
+              paths:
+                  - path: /.*
+                    pathType: Prefix
+                    backend:
+                        service:
+                            name: shared-content-web-service
+                            port:
+                                name: shared-web-http

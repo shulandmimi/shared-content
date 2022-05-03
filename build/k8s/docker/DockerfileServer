@@ -1,0 +1,15 @@
+FROM node:latest
+
+WORKDIR /home/shared-content/
+
+COPY ./ ./
+
+RUN npm install pnpm -g
+
+RUN pnpm i --filter server
+
+RUN cd ./packages/server && pnpm run build
+
+EXPOSE 12306
+
+ENTRYPOINT [ "node", "packages/server/dist/index.js" ]
