@@ -43,7 +43,7 @@ spec:
     selector:
         app: shared-content-server
     ports:
-        - name: shared-server-http
+        - name: s-server-http
           port: 80
           targetPort: 12306
           nodePort: 32309
@@ -73,4 +73,4 @@ spec:
                         service:
                             name: shared-content-server-service
                             port:
-                                name: shared-server-http
+                                name: s-server-http
