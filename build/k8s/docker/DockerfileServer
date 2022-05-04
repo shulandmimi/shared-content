@@ -6,7 +6,7 @@ COPY ./ ./
 
 RUN npm install pnpm -g
 
-RUN pnpm i --filter server
+RUN pnpm i --filter server && pnpm i --filter moleculer-db-adapter-mongoose
 
 RUN cd ./packages/server && pnpm run build
 

@@ -26,7 +26,7 @@ spec:
                   envFrom:
                       - configMapRef:
                             name: shared-content-config
-                  image: shulandmimi/shared-content:serverv0.0.3
+                  image: shulandmimi/shared-content:server-hash
                   ports:
                       - containerPort: 12306
 
@@ -46,7 +46,7 @@ spec:
         - name: s-server-http
           port: 80
           targetPort: 12306
-          nodePort: 32309
+          nodePort: 32311
     type: NodePort
 
 ---

@@ -21,7 +21,7 @@ spec:
             # imagePullSecrets:
             containers:
                 - name: shared-content-web
-                  image: shulandmimi/shared-content:web-a8b7204d4e48c39f3856af9986120e2f03f0f1c7
+                  image: shulandmimi/shared-content:web-hash
                   ports:
                       - containerPort: 80
 ---
