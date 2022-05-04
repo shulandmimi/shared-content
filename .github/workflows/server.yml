@@ -44,7 +44,7 @@ jobs:
             - name: '部署'
               run: |
                   sudo echo ${{ secrets.KUBE_HOST }} apiserver.master | sudo tee -a /etc/hosts
-                  sed -i -e 's/image: .*$/image: shulandmimi\/shared-content:server-$GITHUB_SHA/' build/k8s/server.yml
+                  sed -i -e 's/image: .*$/image: shulandmimi\/shared-content:server-$GITHUB_SHA' build/k8s/server.yml
                   cat build/k8s/server.yml
             - name: '配置注入'
               run: |
