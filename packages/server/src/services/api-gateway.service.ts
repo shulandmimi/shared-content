@@ -1,10 +1,9 @@
 import APIService, { ApiSettingsSchema } from 'moleculer-web';
 import cookieParser from 'cookie-parser';
 import _ from 'lodash';
-import jwt from 'jsonwebtoken';
 import { ServiceSchema } from 'moleculer';
 
-const crendenatial = 'ss';
+const credentials = process.env.CREDENTIALS;
 
 export default {
     name: 'Getaway',
@@ -80,16 +79,15 @@ export default {
     } as ApiSettingsSchema,
     methods: {
         authorize(ctx, route, req, res) {
-            console.log(req.body);
+            this.logger.info(req.body);
             const token = req.body?.token;
-            if (crendenatial) {
-                if (!_.isNil(token) && token === crendenatial) {
+            if (credentials) {
+                if (!_.isNil(token) && token === credentials) {
                     return Promise.resolve();
                 }
             } else {
                 return Promise.resolve();
             }
-            // return Promise.resolve({ status: 1, msg: '123' });
             return Promise.reject(new APIService.Errors.UnAuthorizedError(null, APIService.Errors.ERR_NO_TOKEN));
         },
     },
