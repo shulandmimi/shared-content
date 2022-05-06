@@ -60,6 +60,7 @@ spec:
     tls:
         - hosts:
               - shared.wdbke.top
+          secretName: ingress-secret
     rules:
         - host: shared.wdbke.top
           http:

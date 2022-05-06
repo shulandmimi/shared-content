@@ -63,6 +63,10 @@ metadata:
         nginx.ingress.kubernetes.io/use-regex: 'true'
 
 spec:
+    tls:
+        - hosts:
+              - sharedapi.wdbke.top
+          secretName: ingress-secret
     rules:
         - host: sharedapi.wdbke.top
           http:
