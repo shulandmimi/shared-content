@@ -4,6 +4,7 @@ on:
             - master
         paths:
             - 'packages/web/**'
+            - 'packages/core/**'
 
 jobs:
     build:

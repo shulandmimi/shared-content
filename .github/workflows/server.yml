@@ -2,10 +2,10 @@ on:
     push:
         branches:
             - master
-        # paths:
-        #     - 'packages/server/**'
-        #     - 'packages/moleculer-db-adapter-mongoose/**'
-        #     - 'packages/core/**'
+        paths:
+            - 'packages/server/**'
+            - 'packages/moleculer-db-adapter-mongoose/**'
+            - 'packages/core/**'
 
 jobs:
     build:
